@@ -1,53 +1,7 @@
-<!--{{template "../public/header.tpl"}}
-<script type="text/javascript">
-    var URL = "/public"
-    $(function() {
-        $("#dialog").dialog({
-            closable: false,
-            buttons: [{
-                text: '登录',
-                iconCls: 'icon-save',
-                handler: function() {
-                    fromsubmit();
-                }
-            }, {
-                text: '重置',
-                iconCls: 'icon-cancel',
-                handler: function() {
-                    $("#form").from("reset");
-                }
-            }]
-        });
-    });
+{{template "../public/header.tpl"}}
 
-    function fromsubmit() {
-        $("#form").form('submit', {
-            url: URL + '/login?isajax=1',
-            onSubmit: function() {
-                return $("#form").form('validate');
-            },
-            success: function(r) {
-                var r = $.parseJSON(r);
-                if (r.status) {
-                    location.href = URL + "/index"
-                } else {
-                    vac.alert(r.info);
-                }
-            }
-        });
-    }
-    //这个就是键盘触发的函数
-    var SubmitOrHidden = function(evt) {
-        evt = window.event || evt;
-        if (evt.keyCode == 13) { //如果取到的键值是回车
-            fromsubmit();
-        }
 
-    }
-    window.document.onkeydown = SubmitOrHidden; //当有键按下时执行函数
-</script>
-
-<body>
+<!--<body>
     <div style="text-align:center;margin:0 auto;width:350px;height:250px;" id="dialog" title="登录">
         <div style="padding:20px 20px 20px 40px;">
             <form id="form" method="post">
@@ -75,7 +29,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>登录 - Pineapple</title>
+        <title>登录 - 御轩寝室</title>
         <link href="../../static/css/vendors.css" rel="stylesheet">
         <link href="../../static/css/user_login.css" rel="stylesheet">
         <style type="text/css">
@@ -138,5 +92,34 @@
           console.log('callback - particles.js config loaded');
         });
     </script>
+    <script type="text/javascript">
+    var URL = "/public"
+
+    function fromsubmit() {
+        $("#form").form('submit', {
+            url: URL + '/login?isajax=1',
+            onSubmit: function() {
+                return $("#form").form('validate');
+            },
+            success: function(r) {
+                var r = $.parseJSON(r);
+                if (r.status) {
+                    location.href = URL + "/index"
+                } else {
+                    vac.alert(r.info);
+                }
+            }
+        });
+    }
+    //这个就是键盘触发的函数
+    var SubmitOrHidden = function(evt) {
+        evt = window.event || evt;
+        if (evt.keyCode == 13) { //如果取到的键值是回车
+            fromsubmit();
+        }
+
+    }
+    window.document.onkeydown = SubmitOrHidden; //当有键按下时执行函数
+</script>
     </body>
 </html>
