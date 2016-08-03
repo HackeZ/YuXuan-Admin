@@ -18,7 +18,7 @@ webpackJsonp([11],{
 	__webpack_require__(325);
 	var formAnimate = __webpack_require__(326);
 	formAnimate();
-	window.$ajax = __webpack_require__(303);
+	// window.$ajax = __webpack_require__(303);
 
 /***/ },
 

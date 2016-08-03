@@ -46,7 +46,7 @@ ul {
   background-color: rgb(138, 00, 255);
   background-repeat: no-repeat;
   background-size: 100% 65px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 10px rgba(15, 30, 0, 0.2);
 }
 
 .navbar .nav {

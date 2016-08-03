@@ -25,6 +25,7 @@ body {
 }
 
 .user-container .user-container-title h2 {
+  font-size: xx-large;
   font-weight: bold;
   margin-top: 0;
   color: #373737;
