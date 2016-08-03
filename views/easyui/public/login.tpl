@@ -20,6 +20,12 @@
             background-position: 50% 50%;
             z-index: -1;
         }
+        
+        .login-tips {
+            margin-top: 26px;
+            margin-bottom: -30px;
+            color: red;
+        }
     </style>
 </head>
 
@@ -52,8 +58,11 @@
                     <label for="password">密码</label>
                     <input id="id_password" name="password" required="required" type="password" />
                 </div>
+                <div class="form-login-tips">
+                    <p class="login-tips"></p>
+                </div>
                 <div class="form-item">
-                    <input type="submit" name="login" id="login-btn" value="登录" onclick="fromsubmit()">
+                    <input type="button" name="login" id="login-btn" value="登录" onclick="fromsubmit()">
                 </div>
                 <div class="register-tab">
                     <a href="##">御轩寝室 - 出品</a>
@@ -66,30 +75,35 @@
     <script src="../../static/js/user_login.js"></script>
     <script type="text/javascript">
         particlesJS.load("particles-js", "../../static/assets/particles.json", function() {
-          console.log('callback - particles.js config loaded');
+            console.log('callback - particles.js config loaded');
         });
     </script>
     <script type="text/javascript">
         var URL = "/public"
 
         function fromsubmit() {
-            $("#form").submit(function() {
-                $.ajax({
-                    type: "POST",
-                    url: URL + '/login?isajax=1',
-                    data: $("#form").serialize(),
-                    async: false,
-                    error: function() {
-                        console.log("Connection Error.")
-                    },
-                    success: function(data) {
-                        if (data.status) {
-                            location.href = URL + "/index"
-                        } else {
-                            console.log(data.info);
-                        }
+            // $("#form").submit(function() {
+
+            // });
+            $.ajax({
+                type: "POST",
+                url: URL + '/login?isajax=1',
+                data: $("#form").serialize(),
+                async: false,
+                error: function() {
+                    $(".login-tips").text("网络出问题了，请联系管理员！");
+                    $("#id_username").val("").focus();
+                    $("#id_password").val("");
+                },
+                success: function(data) {
+                    if (data.status) {
+                        location.href = URL + "/index"
+                    } else {
+                        $(".login-tips").text(data.info);
+                        $("#id_username").val("").focus();
+                        $("#id_password").val("");
                     }
-                });
+                }
             });
         }
         //这个就是键盘触发的函数
