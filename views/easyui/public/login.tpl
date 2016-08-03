@@ -62,12 +62,12 @@
         </div>
     </div>
     <script src="../../static/js/vendors.js"></script>
-    <!--<script src="http://cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>-->
+    <script src="http://cdn.bootcss.com/particles.js/2.0.0/particles.min.js"></script>
     <script src="../../static/js/user_login.js"></script>
     <script type="text/javascript">
-        // particlesJS.load("particles-js", "../../static/assets/particles.json", function() {
-        //   console.log('callback - particles.js config loaded');
-        // });
+        particlesJS.load("particles-js", "../../static/assets/particles.json", function() {
+          console.log('callback - particles.js config loaded');
+        });
     </script>
     <script type="text/javascript">
         var URL = "/public"
