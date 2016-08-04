@@ -26,3 +26,7 @@ func (c *CommonController) GetTemplatetype() string {
 	}
 	return templatetype
 }
+
+func init() {
+
+}
