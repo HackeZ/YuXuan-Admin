@@ -4,10 +4,9 @@ import (
 	"YuXuan-Admin/controllers"
 
 	"github.com/astaxie/beego"
-	"github.com/beego/admin" //admin 包
 )
 
 func init() {
-	admin.Run()
+	AdminRouter()
 	beego.Router("/", &controllers.MainController{})
 }
