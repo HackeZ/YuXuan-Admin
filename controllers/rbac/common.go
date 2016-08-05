@@ -14,7 +14,7 @@ type CommonController struct {
 
 // Resp Response request Status and Info.
 func (c *CommonController) Resp(status bool, str string) {
-	c.Data["json"] = &map[string]interface{}{"status": status, "info", str}
+	c.Data["json"] = &map[string]interface{}{"status": status, "info": str}
 	c.ServeJSON()
 }
 
@@ -28,5 +28,6 @@ func (c *CommonController) GetTemplatetype() string {
 }
 
 func init() {
-
+	// 验证权限
+	AccessRegister()
 }

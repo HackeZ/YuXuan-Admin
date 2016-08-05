@@ -13,7 +13,7 @@ import (
 	"YuXuan-Admin/utils"
 )
 
-//check access and register user's nodes
+//AccessRegister check access and register user's nodes
 func AccessRegister() {
 	var Check = func(ctx *context.Context) {
 		// 默认认证类型 0 不认证 1 登录认证 2 实时认证（不实现）

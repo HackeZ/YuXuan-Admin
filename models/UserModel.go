@@ -81,8 +81,18 @@ func AddUser(u *User) (int64, error) {
 	o := orm.NewOrm()
 	user := new(User)
 	user.Username = u.Username
-	user.Salt = utils.GetNewSalt()
+
+	// Get New Salt and Handle Password.
+	var saltLength int64
+	if beego.AppConfig.String("salt_length") == "" {
+		saltLength = 8
+	} else {
+		saltLength, _ = utils.Atoi64(beego.AppConfig.String("salt_length"))
+	}
+	userSalt := utils.GetNewSalt(saltLength)
+	user.Salt = userSalt
 	user.Password = utils.PassEncode(u.Password, user.Salt)
+
 	user.Nickname = u.Nickname
 	user.Email = u.Email
 	user.Remark = u.Remark
@@ -112,8 +122,15 @@ func UpdateUser(u *User) (int64, error) {
 		user["Remark"] = u.Remark
 	}
 	if len(u.Password) > 0 {
-		user["Salt"] = utils.GetNewSalt()
-		user["Password"] = utils.PassEncode(u.Password, user["Salt"])
+		var saltLength int64
+		if beego.AppConfig.String("salt_length") == "" {
+			saltLength = 8
+		} else {
+			saltLength, _ = utils.Atoi64(beego.AppConfig.String("salt_length"))
+		}
+		userSalt := utils.GetNewSalt(saltLength)
+		user["Salt"] = userSalt
+		user["Password"] = utils.PassEncode(u.Password, userSalt)
 	}
 	if u.Status != 0 {
 		user["Status"] = u.Status
