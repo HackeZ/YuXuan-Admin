@@ -22,9 +22,14 @@ type Node struct {
 	Role   []*Role `orm:"rel(m2m)"`
 }
 
-// TableName Node Table
+// TableName Node Table Name
 func (n *Node) TableName() string {
 	return beego.AppConfig.String("rbac_node_table")
+}
+
+// init Node Model
+func init() {
+	orm.RegisterModel(new(Node))
 }
 
 // checkNode 验证用户信息
@@ -39,11 +44,6 @@ func checkNode(u *Node) (err error) {
 		}
 	}
 	return nil
-}
-
-// init Node Model
-func init() {
-	orm.RegisterModel(new(Node))
 }
 
 // GetNodelist get node list

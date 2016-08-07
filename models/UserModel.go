@@ -12,7 +12,7 @@ import (
 	"github.com/astaxie/beego/validation"
 )
 
-//用户表
+// User 用户表
 type User struct {
 	Id            int64
 	Username      string    `orm:"unique;size(32)" form:"Username"  valid:"Required;MaxSize(20);MinSize(6)"`
@@ -28,10 +28,16 @@ type User struct {
 	// Role          []*Role   `orm:"rel(m2m)"`
 }
 
+// TableName User Table Name.
 func (u *User) TableName() string {
 	return beego.AppConfig.String("rbac_user_table")
 }
 
+func init() {
+	orm.RegisterModel(new(User))
+}
+
+// Valid 密码验证
 func (u *User) Valid(v *validation.Validation) {
 	if u.Password != u.Repassword {
 		v.SetError("Repassword", "两次输入的密码不一样")
@@ -51,29 +57,27 @@ func checkUser(u *User) (err error) {
 	return nil
 }
 
-func init() {
-	orm.RegisterModel(new(User))
-}
-
 /************************************************************/
 
-//get user list
-func Getuserlist(page int64, page_size int64, sort string) (users []orm.Params, count int64) {
+// Getuserlist get user list
+func Getuserlist(page int64, pageSize int64, sort string) (users []orm.Params, count int64) {
 	o := orm.NewOrm()
 	user := new(User)
 	qs := o.QueryTable(user)
+
 	var offset int64
 	if page <= 1 {
 		offset = 0
 	} else {
-		offset = (page - 1) * page_size
+		offset = (page - 1) * pageSize
 	}
-	qs.Limit(page_size, offset).OrderBy(sort).Values(&users)
+
+	qs.Limit(pageSize, offset).OrderBy(sort).Values(&users)
 	count, _ = qs.Count()
 	return users, count
 }
 
-//添加用户
+// AddUser 添加用户
 func AddUser(u *User) (int64, error) {
 	if err := checkUser(u); err != nil {
 		return 0, err
@@ -102,11 +106,12 @@ func AddUser(u *User) (int64, error) {
 	return id, err
 }
 
-//更新用户
+// UpdateUser 更新用户
 func UpdateUser(u *User) (int64, error) {
 	if err := checkUser(u); err != nil {
 		return 0, err
 	}
+
 	o := orm.NewOrm()
 	user := make(orm.Params)
 	if len(u.Username) > 0 {
@@ -138,27 +143,34 @@ func UpdateUser(u *User) (int64, error) {
 	if len(user) == 0 {
 		return 0, errors.New("update field is empty")
 	}
+
 	var table User
 	num, err := o.QueryTable(table).Filter("Id", u.Id).Update(user)
 	return num, err
 }
 
+// DelUserById 删除用户
 func DelUserById(Id int64) (int64, error) {
 	o := orm.NewOrm()
+
 	status, err := o.Delete(&User{Id: Id})
 	return status, err
 }
 
+// GetUserByUsername 获取用户信息
 func GetUserByUsername(username string) (user User) {
 	user = User{Username: username}
 	o := orm.NewOrm()
+
 	o.Read(&user, "Username")
 	return user
 }
 
+// GetSaltById 获取用户盐
 func GetSaltById(Id int64) (string, error) {
 	user := User{Id: Id}
 	o := orm.NewOrm()
+
 	err := o.Read(&user)
 	return user.Salt, err
 }
