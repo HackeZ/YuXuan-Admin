@@ -1,7 +1,7 @@
 package rbac
 
 import (
-	. "YuXuan-Admin/controllers"
+	ctrl "YuXuan-Admin/controllers"
 
 	"github.com/astaxie/beego"
 )
@@ -29,5 +29,5 @@ func (c *CommonController) GetTemplatetype() string {
 
 func init() {
 	// 验证权限
-	AccessRegister()
+	ctrl.AccessRegister()
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/astaxie/beego"
 
 	ctrl "YuXuan-Admin/controllers"
-	m "YuXuanAPI/models"
+	m "YuXuan-Admin/models"
 )
 
 // MainController ...
@@ -58,7 +58,7 @@ func (c *MainController) Login() {
 	if userinfo != nil {
 		c.Ctx.Redirect(302, "/public/index")
 	}
-	c.TplName = c.GetTemplatetype() + "public/login.tpl"
+	c.TplName = c.GetTemplatetype() + "/public/login.tpl"
 }
 
 // Logout 退出
@@ -77,9 +77,9 @@ func (c *MainController) Changepwd() {
 	newPassword := c.GetString("newpassword")
 	repeatPassword := c.GetString("repeatpassword")
 	if newPassword != repeatPassword {
-		c.Rsp(false, "两次输入密码不一致")
+		c.Resp(false, "两次输入密码不一致")
 	}
-	user, err := CheckLogin(userinfo.(m.User).Username, oldPassword)
+	user, err := ctrl.CheckLogin(userinfo.(m.User).Username, oldPassword)
 	if err == nil {
 		var u m.User
 		u.Id = user.Id
@@ -94,4 +94,11 @@ func (c *MainController) Changepwd() {
 	}
 	c.Resp(false, "密码有误")
 
+}
+
+func (c *MainController) GetAllUser() {
+	users, count := m.Getuserlist(1, 10, "Id")
+	c.Data["json"] = &map[string]interface{}{"total": count, "rows": &users}
+	c.ServeJSON()
+	return
 }

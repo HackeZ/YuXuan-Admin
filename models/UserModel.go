@@ -25,7 +25,7 @@ type User struct {
 	Status        int       `orm:"default(2)" form:"Status" valid:"Range(1,2)"`
 	Lastlogintime time.Time `orm:"null;type(datetime)" form:"-"`
 	Createtime    time.Time `orm:"type(datetime);auto_now_add" `
-	// Role          []*Role   `orm:"rel(m2m)"`
+	Role          []*Role   `orm:"rel(m2m)"`
 }
 
 // TableName User Table Name.
@@ -64,14 +64,12 @@ func Getuserlist(page int64, pageSize int64, sort string) (users []orm.Params, c
 	o := orm.NewOrm()
 	user := new(User)
 	qs := o.QueryTable(user)
-
 	var offset int64
 	if page <= 1 {
 		offset = 0
 	} else {
 		offset = (page - 1) * pageSize
 	}
-
 	qs.Limit(pageSize, offset).OrderBy(sort).Values(&users)
 	count, _ = qs.Count()
 	return users, count
@@ -161,6 +159,7 @@ func DelUserById(Id int64) (int64, error) {
 func GetUserByUsername(username string) (user User) {
 	user = User{Username: username}
 	o := orm.NewOrm()
+	log.Println("user -->", user)
 
 	o.Read(&user, "Username")
 	return user
