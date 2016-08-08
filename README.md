@@ -6,6 +6,9 @@ YuXuan Shop Admin. Base on Beego.
 
 ## Usage
 ```shell
+# If You are Use This System First time.Please RUN:
+$ bee run -syncdb
+# Else
 $ bee run
 ```
 

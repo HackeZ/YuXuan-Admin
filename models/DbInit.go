@@ -49,7 +49,30 @@ func Connect() {
 	orm.RegisterDataBase("default", db_type, dns)
 }
 
-//创建数据库
+// Syncdb 初次启动初始化数据库
+func Syncdb() {
+	createdb()
+	Connect()
+	o = orm.NewOrm()
+	// 数据库别名
+	name := "default"
+	// drop table 后再建表
+	force := true
+	// 打印执行过程
+	verbose := true
+	// 遇到错误立即返回
+	err := orm.RunSyncdb(name, force, verbose)
+	if err != nil {
+		fmt.Println(err)
+	}
+	insertUser()
+	insertGroup()
+	insertRole()
+	insertNodes()
+	fmt.Println("database init is complete.\nPlease restart the application")
+}
+
+// createdb 创建数据库
 func createdb() {
 
 	db_type := beego.AppConfig.String("db_type")
